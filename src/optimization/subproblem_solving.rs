@@ -16,7 +16,7 @@ use crate::core::solution::Solution;
 use crate::optimization::variable_partitioning::{VariablePartition, PartitionResult};
 use crate::variables::{Var, VarId};
 use crate::variables::domain::float_interval::precision_to_step_size;
-use std::time::{Duration, Instant};
+use web_time::{Duration, Instant};
 use std::collections::HashMap;
 
 /// Specialized solver for float-only subproblems

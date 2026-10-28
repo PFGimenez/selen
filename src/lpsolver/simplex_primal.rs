@@ -49,7 +49,7 @@ impl PrimalSimplex {
             problem.n_vars, problem.n_constraints);
         
         // Start timing for timeout checking
-        let start_time = std::time::Instant::now();
+        let start_time = web_time::Instant::now();
         
         // Validate problem
         problem.validate()?;
@@ -63,7 +63,7 @@ impl PrimalSimplex {
         
         // Phase I: Find initial feasible basis
         lp_debug!("SIMPLEX: Starting Phase I...");
-        let phase1_start = std::time::Instant::now();
+        let phase1_start = web_time::Instant::now();
         let (mut basis, phase1_iterations) = self.phase_one(&a_eq, &b_eq, start_time)?;
         let phase1_time_ms = phase1_start.elapsed().as_secs_f64() * 1000.0;
         lp_debug!("SIMPLEX: Phase I completed in {:.2}ms with {} iterations", phase1_time_ms, phase1_iterations);
@@ -71,7 +71,7 @@ impl PrimalSimplex {
         // Phase II: Optimize from feasible basis
         // Note: Pass problem.n_vars (original variable count) so solution extraction works correctly
         lp_debug!("SIMPLEX: Starting Phase II...");
-        let phase2_start = std::time::Instant::now();
+        let phase2_start = web_time::Instant::now();
         let mut solution = self.phase_two(&a_eq, &c_extended, &b_eq, &mut basis, problem.n_vars, start_time, phase1_iterations)?;
         let phase2_time_ms = phase2_start.elapsed().as_secs_f64() * 1000.0;
         lp_debug!("SIMPLEX: Phase II completed in {:.2}ms", phase2_time_ms);
@@ -181,7 +181,7 @@ impl PrimalSimplex {
     ///
     /// Solves auxiliary problem: minimize sum of artificial variables
     /// Returns (feasible basis, phase1_iterations) if one exists
-    fn phase_one(&mut self, a: &Matrix, b: &[f64], start_time: std::time::Instant) -> Result<(Basis, usize), LpError> {
+    fn phase_one(&mut self, a: &Matrix, b: &[f64], start_time: web_time::Instant) -> Result<(Basis, usize), LpError> {
         let m = a.rows;
         let n = a.cols;
         lp_debug!("SIMPLEX Phase I: m={}, n={}", m, n);
@@ -527,7 +527,7 @@ impl PrimalSimplex {
         b: &[f64],
         basis: &mut Basis,
         n_vars: usize,
-        start_time: std::time::Instant,
+        start_time: web_time::Instant,
         phase1_iterations: usize,
     ) -> Result<LpSolution, LpError> {
         let mut phase2_iterations = 0;

@@ -99,13 +99,13 @@
 //! 
 //! // Create statistics manually using constructor
 //! let custom_stats = SolveStats::new(100, 10, 
-//!     std::time::Duration::from_millis(5), 20, 15, 8);
+//!     web_time::Duration::from_millis(5), 20, 15, 8);
 //! println!("Custom stats efficiency: {:.1}", custom_stats.efficiency());
 //! ```
 
 use std::borrow::Borrow;
 use std::ops::Index;
-use std::time::Duration;
+use web_time::Duration;
 
 use crate::variables::{Val, VarId, VarIdBin};
 

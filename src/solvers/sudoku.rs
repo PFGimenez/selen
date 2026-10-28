@@ -6,7 +6,7 @@
 
 use crate::model::*;
 use crate::prelude::*;
-use std::time::Instant;
+use web_time::Instant;
 
 /// A sparse set optimized for Sudoku candidate tracking (domain 1-9).
 /// Much faster than HashSet for this specific use case.

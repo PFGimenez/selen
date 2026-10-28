@@ -15,7 +15,7 @@ use crate::variables::{Var, VarId, Val};
 use crate::optimization::subproblem_solving::{CombinedSolution, SubproblemValue};
 use crate::optimization::variable_partitioning::PartitionResult;
 use std::collections::HashMap;
-use std::time::{Duration, Instant};
+use web_time::{Duration, Instant};
 
 /// Integrator for combining and validating subproblem solutions
 #[derive(Debug)]

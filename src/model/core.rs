@@ -148,8 +148,8 @@ impl Model {
     }
 
     /// Get timeout as Duration for search operations
-    fn timeout_duration(&self) -> Option<std::time::Duration> {
-        self.config.timeout_ms.map(std::time::Duration::from_millis)
+    fn timeout_duration(&self) -> Option<web_time::Duration> {
+        self.config.timeout_ms.map(web_time::Duration::from_millis)
     }
 
     /// Get memory limit in MB for search operations
@@ -436,7 +436,7 @@ impl Model {
         }
         
         // Record start time for initialization time tracking
-        let init_start = std::time::Instant::now();
+        let init_start = web_time::Instant::now();
         
         // Capture variable type counts from the model before optimization/search
         let int_var_count = self.vars.int_var_count;
@@ -452,7 +452,7 @@ impl Model {
                 solution.stats = crate::core::solution::SolveStats {
                     propagation_count: 0,
                     node_count: 0,
-                    solve_time: std::time::Duration::ZERO,
+                    solve_time: web_time::Duration::ZERO,
                     variables: solution.stats.variables, // Preserve if already set
                     constraint_count: solution.stats.constraint_count, // Preserve if already set
                     peak_memory_mb: solution.stats.peak_memory_mb, // Preserve from optimization
@@ -598,7 +598,7 @@ impl Model {
         }
         
         // Record start time for initialization time tracking
-        let init_start = std::time::Instant::now();
+        let init_start = web_time::Instant::now();
         
         // Capture variable type counts from the model before optimization/search
         let int_var_count = self.vars.int_var_count;
@@ -613,7 +613,7 @@ impl Model {
                 solution.stats = crate::core::solution::SolveStats {
                     propagation_count: 0,
                     node_count: 0,
-                    solve_time: std::time::Duration::ZERO,
+                    solve_time: web_time::Duration::ZERO,
                     variables: solution.stats.variables, // Preserve if already set
                     constraint_count: solution.stats.constraint_count, // Preserve if already set
                     peak_memory_mb: solution.stats.peak_memory_mb, // Preserve from optimization
@@ -1513,7 +1513,7 @@ impl Model {
         }
         
         // Record start time for initialization time tracking
-        let init_start = std::time::Instant::now();
+        let init_start = web_time::Instant::now();
         
         // Capture variable type counts from the model before search
         let int_var_count = self.vars.int_var_count;
@@ -1841,7 +1841,7 @@ impl Model {
                 let stats = crate::core::solution::SolveStats {
                     propagation_count: 0,
                     node_count: 0,
-                    solve_time: std::time::Duration::ZERO,
+                    solve_time: web_time::Duration::ZERO,
                     variables: 0, // Unknown due to validation failure
                     constraint_count: 0, // Unknown due to validation failure
                     peak_memory_mb: 0, // No memory used if validation failed
@@ -1851,7 +1851,7 @@ impl Model {
                     lp_stats: None,
                     bool_variables: 0,
                     float_variables: 0,
-                    init_time: std::time::Duration::ZERO,
+                    init_time: web_time::Duration::ZERO,
                     int_variables: 0,
                     objective: 0.0,
                     objective_bound: 0.0,
@@ -1888,7 +1888,7 @@ impl Model {
                     lp_stats: None,
                     bool_variables: 0,
                     float_variables: 0,
-                    init_time: std::time::Duration::ZERO,
+                    init_time: web_time::Duration::ZERO,
                     int_variables: 0,
                     objective: 0.0,
                     objective_bound: 0.0,

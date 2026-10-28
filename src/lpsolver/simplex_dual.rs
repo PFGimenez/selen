@@ -48,7 +48,7 @@ impl DualSimplex {
     /// but may be primal-infeasible (some basic variables < 0)
     pub fn solve(&mut self, problem: &LpProblem) -> Result<LpSolution, LpError> {
         // Start timing for timeout checking
-        let start_time = std::time::Instant::now();
+        let start_time = web_time::Instant::now();
         
         problem.validate()?;
 

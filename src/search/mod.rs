@@ -86,7 +86,7 @@ pub fn search_with_timeout<M: Mode>(
     vars: Vars, 
     props: Propagators, 
     mode: M, 
-    timeout: Option<std::time::Duration>,
+    timeout: Option<web_time::Duration>,
     pending_lp_constraints: Vec<crate::lpsolver::csp_integration::LinearConstraint>,
     float_precision_digits: i32
 ) -> Search<M> {
@@ -110,7 +110,7 @@ pub fn search_with_timeout_and_memory<M: Mode>(
     vars: Vars, 
     props: Propagators, 
     mode: M, 
-    timeout: Option<std::time::Duration>,
+    timeout: Option<web_time::Duration>,
     memory_limit_mb: Option<u64>,
     pending_lp_constraints: Vec<crate::lpsolver::csp_integration::LinearConstraint>,
     float_precision_digits: i32
@@ -353,10 +353,10 @@ impl<M> Search<M> {
     }
 
     /// Get the elapsed time since search started
-    pub fn elapsed_time(&self) -> std::time::Duration {
+    pub fn elapsed_time(&self) -> web_time::Duration {
         match self {
             Self::Stalled(engine) => engine.elapsed_time(),
-            Self::Done(_) => std::time::Duration::from_secs(0), // Completed searches don't track time
+            Self::Done(_) => web_time::Duration::from_secs(0), // Completed searches don't track time
         }
     }
 
@@ -387,7 +387,7 @@ impl<M: Mode> Iterator for Search<M> {
                 let stats = crate::core::solution::SolveStats {
                     propagation_count: space.get_propagation_count(),
                     node_count: space.get_node_count(),
-                    solve_time: std::time::Duration::ZERO, // TODO: Track solve time in Space
+                    solve_time: web_time::Duration::ZERO, // TODO: Track solve time in Space
                     variables: space.vars.count(),
                     constraint_count: space.props.count(),
                     peak_memory_mb: space.estimate_memory_mb(),
@@ -400,7 +400,7 @@ impl<M: Mode> Iterator for Search<M> {
                     lp_constraint_count: space.lp_constraint_count,
                     lp_variable_count: space.lp_variable_count,
                     lp_stats: space.lp_stats,
-                    init_time: std::time::Duration::ZERO,
+                    init_time: web_time::Duration::ZERO,
                     objective: 0.0,
                     objective_bound: 0.0,
                 };
@@ -418,8 +418,8 @@ pub struct Engine<M, B> {
     branching_factory: fn(Space) -> B,
     current_stats: Option<(usize, usize)>, // (propagation_count, node_count)
     // Timeout support
-    start_time: std::time::Instant,
-    timeout_duration: Option<std::time::Duration>,
+    start_time: web_time::Instant,
+    timeout_duration: Option<web_time::Duration>,
     // Memory limit support
     memory_limit_mb: Option<u64>,
     // Optimization: only check timeout/memory periodically
@@ -442,7 +442,7 @@ impl<M> DefaultEngine<M> {
             mode,
             branching_factory: split_on_unassigned,
             current_stats: None,
-            start_time: std::time::Instant::now(),
+            start_time: web_time::Instant::now(),
             timeout_duration: None,
             memory_limit_mb: None,
             iteration_count: 0,
@@ -452,7 +452,7 @@ impl<M> DefaultEngine<M> {
         }
     }
 
-    pub fn with_timeout(space: Space, mode: M, timeout: Option<std::time::Duration>) -> Self {
+    pub fn with_timeout(space: Space, mode: M, timeout: Option<web_time::Duration>) -> Self {
         // Preserve a trail of copies to allow backtracking on failed spaces
         Self {
             branch_iter: split_on_unassigned(space),
@@ -460,7 +460,7 @@ impl<M> DefaultEngine<M> {
             mode,
             branching_factory: split_on_unassigned,
             current_stats: None,
-            start_time: std::time::Instant::now(),
+            start_time: web_time::Instant::now(),
             timeout_duration: timeout,
             memory_limit_mb: None,
             iteration_count: 0,
@@ -473,7 +473,7 @@ impl<M> DefaultEngine<M> {
     pub fn with_timeout_and_memory(
         space: Space, 
         mode: M, 
-        timeout: Option<std::time::Duration>,
+        timeout: Option<web_time::Duration>,
         memory_limit_mb: Option<u64>
     ) -> Self {
         // Preserve a trail of copies to allow backtracking on failed spaces
@@ -483,7 +483,7 @@ impl<M> DefaultEngine<M> {
             mode,
             branching_factory: split_on_unassigned,
             current_stats: None,
-            start_time: std::time::Instant::now(),
+            start_time: web_time::Instant::now(),
             timeout_duration: timeout,
             memory_limit_mb,
             iteration_count: 0,
@@ -527,7 +527,7 @@ impl<M, B> Engine<M, B> {
     }
 
     /// Get the elapsed time since search started
-    pub fn elapsed_time(&self) -> std::time::Duration {
+    pub fn elapsed_time(&self) -> web_time::Duration {
         self.start_time.elapsed()
     }
 
@@ -639,7 +639,7 @@ impl<M: Mode, B: Iterator<Item = (Space, crate::constraints::props::PropId)>> It
                         let stats = crate::core::solution::SolveStats {
                             propagation_count: space.get_propagation_count(),
                             node_count: space.get_node_count(),
-                            solve_time: std::time::Duration::ZERO, // TODO: Track solve time in Engine
+                            solve_time: web_time::Duration::ZERO, // TODO: Track solve time in Engine
                             variables: space.vars.count(),
                             constraint_count: space.props.count(),
                             peak_memory_mb: space.estimate_memory_mb(),
@@ -652,7 +652,7 @@ impl<M: Mode, B: Iterator<Item = (Space, crate::constraints::props::PropId)>> It
                             lp_constraint_count: space.lp_constraint_count,
                             lp_variable_count: space.lp_variable_count,
                             lp_stats: space.lp_stats,
-                            init_time: std::time::Duration::ZERO,
+                            init_time: web_time::Duration::ZERO,
                             objective: 0.0,
                             objective_bound: 0.0,
                         };

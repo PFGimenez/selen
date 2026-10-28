@@ -485,7 +485,7 @@ mod tests {
         assert_eq!(result.optimal_value, 1.000000, "Should find correct maximum");
         
         // This should complete instantly, not hang like the binary search approach
-        let start = std::time::Instant::now();
+        let start = web_time::Instant::now();
         let _repeated_result = optimizer.maximize_variable(&vars, var_id);
         let duration = start.elapsed();
         
